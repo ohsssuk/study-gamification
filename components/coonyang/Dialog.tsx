@@ -82,13 +82,27 @@ export default function Dialog({
   };
 
   const nextScenario = () => {
-    setProfileName(scenario[currentScenarioIndex].profileName);
+    const {
+      profileName,
+      text,
+      isLast = false,
+      callback = () => {},
+    } = scenario[currentScenarioIndex];
+
+    setProfileName(profileName);
+    setIsEnd(isLast);
+    callback();
 
     if (typingState === TypingStateEnum.Ready) {
       typing();
     } else if (typingState === TypingStateEnum.Progress) {
       typingComplete();
     } else {
+      if (currentScenarioIndex === scenario.length - 1) {
+        finishCallback();
+        return;
+      }
+
       setTypingState(TypingStateEnum.Ready);
       setCurrentScenarioIndex((prev) => prev + 1);
     }
@@ -111,7 +125,7 @@ export default function Dialog({
       <button
         onClick={nextScenario}
         className={`dialog-next ${
-          typingState === TypingStateEnum.End ? "to-next" : ""
+          typingState === TypingStateEnum.End && !isEnd ? "to-next" : ""
         }`}
       >
         다음
