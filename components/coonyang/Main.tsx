@@ -16,7 +16,7 @@ export default function Main({}: MainProps) {
           },
           {
             text: "싫어! 발바닥 젤리가 불타는 줄 알았다구...!",
-            profileName: "user_cynical",
+            profileName: "user_cynic",
           },
           {
             text: "하핫...! 꾹꾹이 후엔 발바닥이 아플 테니 열 식히는 시간을 꼭 가지도록 해!",
@@ -28,7 +28,7 @@ export default function Main({}: MainProps) {
           },
           {
             text: "(뭔가 단단히 잘못 걸린 것 같다...!)",
-            profileName: "user_cynical",
+            profileName: "user_cynic",
           },
           {
             text: "딸기잼을 4번 만들면 한 병이 완성돼. 그때마다 최대 3만원의 적립금을 수고비로 줄게!",
@@ -36,7 +36,7 @@ export default function Main({}: MainProps) {
           },
           {
             text: "그렇다면...할만 할지도...?",
-            profileName: "user_cynical",
+            profileName: "user_cynic",
           },
           {
             text: "하하하! 그럴 줄 알았어! 그럼 앞으로 잘 부탁해!",

@@ -44,7 +44,7 @@ export default function Dialog({
         clearInterval(typingInterval.current);
       }
     };
-  }, []);
+  }, [currentScenarioIndex]);
 
   const typing = () => {
     if (!textRef.current) {
@@ -89,7 +89,8 @@ export default function Dialog({
     } else if (typingState === TypingStateEnum.Progress) {
       typingComplete();
     } else {
-      console.log("next");
+      setTypingState(TypingStateEnum.Ready);
+      setCurrentScenarioIndex((prev) => prev + 1);
     }
   };
 
@@ -102,6 +103,7 @@ export default function Dialog({
             alt="고양이 얼굴"
             width={117}
             height={117}
+            key={profileName}
           />
         </div>
         <div ref={textRef} className="dialog-text"></div>
