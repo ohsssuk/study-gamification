@@ -8,3 +8,9 @@ export enum SpeechingNowEnum {
   User = "user",
   Coo = "coo",
 }
+
+export enum TouchStateEnum {
+  Start = "start",
+  Complete = "complete",
+  InProgress = "inProgress",
+}

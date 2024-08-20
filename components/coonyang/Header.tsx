@@ -2,11 +2,11 @@ import Image from "next/image";
 import { GnbTypeEnum } from "@/enums/coonyang";
 
 interface HeaderProps {
-  level: number;
+  actCount: number;
   type: GnbTypeEnum;
 }
 export default function Header({
-  level = 0,
+  actCount = 0,
   type = GnbTypeEnum.All,
 }: HeaderProps) {
   return (

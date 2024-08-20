@@ -1,5 +1,7 @@
 "use client";
 
+import { Scenario } from "@/interfaces/coonyang";
+import { useDialogStore } from "@/stores/coonyangStore";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -9,22 +11,9 @@ enum TypingStateEnum {
   End = 2,
 }
 
-interface Scenario {
-  text: string;
-  profileName: string;
-  callback?: () => void;
-  isLast?: boolean;
-}
+export default function Dialog() {
+  const { scenario, finishCallback } = useDialogStore();
 
-interface DialogProps {
-  scenario: Scenario[];
-  finishCallback?: () => void;
-}
-
-export default function Dialog({
-  scenario,
-  finishCallback = () => {},
-}: DialogProps) {
   const TYPING_DELAY = 50;
   const textRef = useRef<HTMLDivElement>(null);
   const typingInterval = useRef<NodeJS.Timeout | null>(null);
@@ -44,7 +33,7 @@ export default function Dialog({
         clearInterval(typingInterval.current);
       }
     };
-  }, [currentScenarioIndex]);
+  }, [scenario, currentScenarioIndex]);
 
   const typing = () => {
     if (!textRef.current) {
@@ -82,6 +71,8 @@ export default function Dialog({
   };
 
   const nextScenario = () => {
+    if (scenario.length === 0) return;
+
     const {
       profileName,
       text,
@@ -103,10 +94,12 @@ export default function Dialog({
         return;
       }
 
-      setTypingState(TypingStateEnum.Ready);
       setCurrentScenarioIndex((prev) => prev + 1);
+      setTypingState(TypingStateEnum.Ready);
     }
   };
+
+  if (scenario.length === 0) return null;
 
   return (
     <div id="coonyang_dialog" className="dialog-box">
