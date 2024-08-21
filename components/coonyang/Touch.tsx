@@ -1,6 +1,7 @@
 import { TouchStateEnum } from "@/enums/coonyang";
 import { useDialogStore } from "@/stores/coonyangStore";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import View from "@/components/coonyang/View";
 
 export default function Touch() {
   const { createDialog, destoryDialog } = useDialogStore();
@@ -14,7 +15,15 @@ export default function Touch() {
   const makerAka = "TESTER";
 
   useEffect(() => {
-    if (touchedCount === 1) {
+    if (touchedCount === 0) {
+      createDialog([
+        {
+          text: "뭐 하는 거야? 어서 딸기에 꾹꾹이 진행시켜!",
+          profileName: "coo_normal",
+          isLast: true,
+        },
+      ]);
+    } else if (touchedCount === 1) {
       createDialog([
         {
           text: "조금 더 빨리! 딸기가 산더미처럼 쌓여있다구!",
@@ -48,6 +57,10 @@ export default function Touch() {
         },
       ]);
       setState(TouchStateEnum.Complete);
+
+      setTimeout(() => {
+        console.log("completed");
+      }, 2000);
     }
   }, [touchedCount, createDialog]);
 
@@ -101,21 +114,23 @@ export default function Touch() {
   };
 
   return (
-    <div ref={touchWrapRef} className="touch-wrap">
-      <img
-        ref={berryImgRef}
-        className="berry-img"
-        src="/images/coonyang/berry_xl.png"
-        alt="딸기 클릭"
-      />
-      <button onClick={handleTouch} className="touch-berry" type="button">
-        딸기 클릭(꾹꾹이)
-      </button>
-      {state !== TouchStateEnum.InProgress && (
-        <div className={`touch-state-banner ${state}`}>
-          ${state === TouchStateEnum.Start ? "터치" : "완료"}
-        </div>
-      )}
-    </div>
+    <View viewType={3}>
+      <div ref={touchWrapRef} className="touch-wrap">
+        <img
+          ref={berryImgRef}
+          className="berry-img"
+          src="/images/coonyang/berry_xl.png"
+          alt="딸기 클릭"
+        />
+        <button onClick={handleTouch} className="touch-berry" type="button">
+          딸기 클릭(꾹꾹이)
+        </button>
+        {state !== TouchStateEnum.InProgress && (
+          <div className={`touch-state-banner ${state}`}>
+            ${state === TouchStateEnum.Start ? "터치" : "완료"}
+          </div>
+        )}
+      </div>
+    </View>
   );
 }
