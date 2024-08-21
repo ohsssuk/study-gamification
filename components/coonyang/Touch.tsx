@@ -1,6 +1,6 @@
 import { TouchStateEnum } from "@/enums/coonyang";
 import { useDialogStore } from "@/stores/coonyangStore";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Touch() {
   const { createDialog, destoryDialog } = useDialogStore();
@@ -11,6 +11,46 @@ export default function Touch() {
   const touchWrapRef = useRef<HTMLDivElement>(null);
   const berryImgRef = useRef<HTMLImageElement>(null);
 
+  const makerAka = "TESTER";
+
+  useEffect(() => {
+    if (touchedCount === 1) {
+      createDialog([
+        {
+          text: "조금 더 빨리! 딸기가 산더미처럼 쌓여있다구!",
+          profileName: "coo_normal",
+          isLast: true,
+        },
+      ]);
+      setState(TouchStateEnum.InProgress);
+    } else if (touchedCount === 10) {
+      createDialog([
+        {
+          text: "아직 부족해! 발바닥 젤리에 불이 날 때까지 누르란 말이야!",
+          profileName: "coo_normal",
+          isLast: true,
+        },
+      ]);
+    } else if (touchedCount === 20) {
+      createDialog([
+        {
+          text: `조금만 더...! 거의 다왔어 ${makerAka} 냥!`,
+          profileName: "coo_normal",
+          isLast: true,
+        },
+      ]);
+    } else if (touchedCount === 30) {
+      createDialog([
+        {
+          text: `아... 나의 발바닥 젤리에 불이 나는군...!`,
+          profileName: "user_close",
+          isLast: true,
+        },
+      ]);
+      setState(TouchStateEnum.Complete);
+    }
+  }, [touchedCount, createDialog]);
+
   const handleTouch = (event: {
     nativeEvent: { offsetX: number; offsetY: number };
   }) => {
@@ -18,29 +58,9 @@ export default function Touch() {
     touchEffect(event.nativeEvent.offsetX, event.nativeEvent.offsetY);
   };
 
-  const touchEvent = useCallback(() => {
-    setTouchedCount((prevCount) => {
-      const newCount = prevCount + 1;
-
-      if (newCount > 30) {
-        setState(TouchStateEnum.Complete);
-      } else if (newCount > 20) {
-        //
-      } else if (newCount > 10) {
-        createDialog([
-          {
-            text: "힘내 힘내",
-            profileName: "coo_normal",
-            callback: () => {},
-          },
-        ]);
-      } else if (newCount > 0) {
-        setState(TouchStateEnum.InProgress);
-      }
-
-      return newCount;
-    });
-  }, [createDialog]);
+  const touchEvent = () => {
+    setTouchedCount((prevCount) => prevCount + 1);
+  };
 
   const touchEffect = (offsetX: number, offsetY: number) => {
     if (state === TouchStateEnum.Complete) return;

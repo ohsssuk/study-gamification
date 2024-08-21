@@ -1,7 +1,6 @@
 "use client";
 
 import { Scenario } from "@/interfaces/coonyang";
-import { useDialogStore } from "@/stores/coonyangStore";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -11,9 +10,14 @@ enum TypingStateEnum {
   End = 2,
 }
 
-export default function Dialog() {
-  const { scenario, finishCallback } = useDialogStore();
-
+interface DialogProps {
+  scenario?: Scenario[];
+  finishCallback?: () => void;
+}
+export default function Dialog({
+  scenario = [],
+  finishCallback = () => {},
+}: DialogProps) {
   const TYPING_DELAY = 50;
   const textRef = useRef<HTMLDivElement>(null);
   const typingInterval = useRef<NodeJS.Timeout | null>(null);
@@ -27,13 +31,15 @@ export default function Dialog() {
 
   useEffect(() => {
     nextScenario();
+  }, [currentScenarioIndex]);
 
+  useEffect(() => {
     return () => {
       if (typingInterval.current) {
         clearInterval(typingInterval.current);
       }
     };
-  }, [scenario, currentScenarioIndex]);
+  }, []);
 
   const typing = () => {
     if (!textRef.current) {
@@ -71,7 +77,7 @@ export default function Dialog() {
   };
 
   const nextScenario = () => {
-    if (scenario.length === 0) return;
+    if (scenario.length === 0 || !scenario[currentScenarioIndex]) return;
 
     const {
       profileName,

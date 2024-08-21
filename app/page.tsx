@@ -10,30 +10,36 @@ import View from "@/components/coonyang/View";
 import Dialog from "@/components/coonyang/Dialog";
 
 import { useDialogStore } from "@/stores/coonyangStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { createDialog, destoryDialog } = useDialogStore();
+  const { scenario, finishCallback, createDialog, destoryDialog } =
+    useDialogStore();
+
+  const [dialogVersion, setDialogVersion] = useState<number>(0);
 
   useEffect(() => {
-    createDialog(
-      [
-        {
-          text: "안녕? 나는 쿠냥이야. 너의 이름은 뭐야?",
-          profileName: "coo_normal",
-          callback: () => {},
-        },
-        {
-          text: "나?! 내 이름은...",
-          profileName: "user_close",
-          callback: () => {},
-        },
-      ],
-      () => {
-        destoryDialog();
-        console.log("finish");
+    setDialogVersion((prev) => prev + 1);
+  }, [scenario]);
+
+  useEffect(() => {
+    createDialog([
+      {
+        text: "안녕? 나는 쿠냥이야. 너의 이름은 뭐야?",
+        profileName: "coo_normal",
+        callback: () => {},
       },
-    );
+      {
+        text: "나?! 내 이름은...",
+        profileName: "user_close",
+        callback: () => {},
+      },
+      {
+        text: "나?! 내 이름은...",
+        profileName: "user_close",
+        isLast: true,
+      },
+    ]);
   }, [useDialogStore]);
 
   return (
@@ -41,7 +47,11 @@ export default function Home() {
       {/* <InitLoading /> */}
       <Header actCount={2} type={GnbTypeEnum.Back} />
       <View />
-      <Dialog />
+      <Dialog
+        key={dialogVersion}
+        scenario={scenario}
+        finishCallback={finishCallback}
+      />
     </Wrap>
   );
 }
