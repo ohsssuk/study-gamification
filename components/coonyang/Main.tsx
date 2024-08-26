@@ -2,19 +2,15 @@ import View from "@/components/coonyang/View";
 
 interface MainProps {
   actCount: number;
+  fullCount: number;
   makeAvailableSeconds: number;
 }
 
 export default function Main({
   actCount = 0,
+  fullCount = 4,
   makeAvailableSeconds = 10,
 }: MainProps) {
-  const FULL_COUNT = 4;
-
-  if (actCount > FULL_COUNT) {
-    actCount = FULL_COUNT;
-  }
-
   function formatTime(seconds: number) {
     const hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
     const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
@@ -30,7 +26,7 @@ export default function Main({
             <img
               className="bottle"
               src={`/images/coonyang/jam_lv_${actCount}.png`}
-              alt={`잼 ${actCount}/${FULL_COUNT}`}
+              alt={`잼 ${actCount}/${fullCount}`}
             />
             <img
               className="deco"

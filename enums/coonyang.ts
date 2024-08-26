@@ -14,3 +14,8 @@ export enum TouchStateEnum {
   Complete = "complete",
   InProgress = "inProgress",
 }
+
+export enum NowStelEnum {
+  Main = 0,
+  Touch = 1,
+}
