@@ -13,10 +13,11 @@ import Conversation from "@/components/coonyang/Conversation";
 
 import { useDialogStore, useInfoStore } from "@/stores/coonyangStore";
 
-import { intro, story, tutorial } from "./scenarioData";
+import { intro, main, story, tutorialStart, tutorialEnd } from "./scenarioData";
 
 import "./coonyang.css";
 import MakeAka from "@/components/coonyang/MakerAka";
+import RewardPopup from "@/components/coonyang/RewardPopup";
 
 export default function Home() {
   const { scenario, finishCallback, createDialog, destoryDialog } =
@@ -34,37 +35,82 @@ export default function Home() {
   } = useInfoStore();
 
   const [dialogVersion, setDialogVersion] = useState<number>(0);
-  const [nowStep, setNowStep] = useState<number>(NowStepEnum.Intro);
+  const [nowStep, setNowStep] = useState<number>(NowStepEnum.Loading);
 
   const [speechingNow, setSpeechingNow] = useState<SpeechingNowEnum>(
     SpeechingNowEnum.Coo,
   );
+
+  const [view, setView] = useState<JSX.Element | null>(null);
 
   useEffect(() => {
     setDialogVersion((prev) => prev + 1);
   }, [scenario]);
 
   useEffect(() => {
-    if (actCount === 0) {
+    if (actTotalCount === 0) {
       setNowStep(NowStepEnum.Intro);
     } else {
       setNowStep(NowStepEnum.Main);
     }
-    // createDialog(intro(setSpeechingNow), () => {});
-  }, [actCount]);
+  }, [actTotalCount]);
 
   useEffect(() => {
+    console.log(
+      `진행 단계:${nowStep}`,
+      `현재 잼 레벨:${actCount}`,
+      `누적 완료 횟수:${actTotalCount}`,
+    );
+
     if (nowStep === NowStepEnum.Intro) {
+      // A-1. 대화 진행
+      setView(<Conversation speechingNow={speechingNow} />);
+
       createDialog(intro(setSpeechingNow), () => {
         destoryDialog();
         setNowStep(NowStepEnum.makeAka);
       });
     } else if (nowStep === NowStepEnum.Story) {
+      // A-2. 대화 진행
+      setView(<Conversation speechingNow={speechingNow} />);
+
       createDialog(story(setSpeechingNow, makerAka), () => {
         setNowStep(NowStepEnum.Main);
       });
-    } else if (nowStep === NowStepEnum.Main) {
-      createDialog(tutorial(), () => {});
+    } else if (nowStep === NowStepEnum.makeAka) {
+      // B-2. 닉네임 정하기
+      setView(<MakeAka callback={selectAka} />);
+      destoryDialog();
+    } else if (nowStep === NowStepEnum.Touch) {
+      // 터치 미션
+      setView(<Touch makerAka={makerAka} callback={completeTouch} />);
+
+      createDialog(tutorialStart());
+    } else {
+      // 메인 화면
+      setView(
+        <Main
+          actCount={actCount}
+          actTotalCount={actTotalCount}
+          fullCount={fullCount}
+          nowStep={nowStep}
+          makeAvailableSeconds={makeAvailableSeconds}
+          callback={() => setNowStep(NowStepEnum.Touch)}
+        />,
+      );
+
+      if (actCount === fullCount) {
+        setTimeout(() => {}, 3000);
+      }
+
+      // 튜토리얼 종료인지 여부에 따라 다른 대사 출력
+      if (nowStep === NowStepEnum.TutorialEnd) {
+        createDialog(tutorialEnd());
+      } else if (actTotalCount === 0) {
+        createDialog(tutorialStart());
+      } else {
+        createDialog(main(actCount));
+      }
     }
   }, [nowStep]);
 
@@ -73,26 +119,18 @@ export default function Home() {
     setNowStep(NowStepEnum.Story);
   };
 
+  const completeTouch = () => {
+    incrementActCount();
+    setNowStep(NowStepEnum.TutorialEnd);
+  };
+
   return (
     <Wrap>
+      <RewardPopup />
       {/* <InitLoading /> */}
       <Header actCount={actCount} type={GnbTypeEnum.All} />
 
-      {nowStep === NowStepEnum.Intro || nowStep === NowStepEnum.Story ? (
-        <Conversation speechingNow={speechingNow} />
-      ) : nowStep === NowStepEnum.Touch ? (
-        <Touch />
-      ) : nowStep === NowStepEnum.makeAka ? (
-        <MakeAka callback={selectAka} />
-      ) : (
-        <Main
-          actCount={actCount}
-          actTotalCount={actTotalCount}
-          fullCount={fullCount}
-          makeAvailableSeconds={makeAvailableSeconds}
-          callback={() => setNowStep(NowStepEnum.Touch)}
-        />
-      )}
+      {view}
 
       <Dialog
         key={dialogVersion}

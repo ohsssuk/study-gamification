@@ -20,6 +20,7 @@ export const useDialogStore = create<Dialog>((set) => ({
 }));
 
 const FULL_COUNT = 4;
+const INCREASE_COUNT = 2; // TEST를 쉽게 하기 위해 1 -> 2로 수정
 interface Info {
   actCount: number;
   actTotalCount: number;
@@ -42,8 +43,8 @@ export const useInfoStore = create<Info>()(
 
       incrementActCount: () =>
         set((state) => ({
-          actCount: state.actTotalCount + 1,
-          actTotalCount: state.actTotalCount + 1,
+          actCount: state.actTotalCount + INCREASE_COUNT,
+          actTotalCount: state.actTotalCount + INCREASE_COUNT,
         })),
 
       setCompleteAct: (actTotalCount, fullCount) =>

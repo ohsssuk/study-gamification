@@ -16,10 +16,11 @@ export enum TouchStateEnum {
 }
 
 export enum NowStepEnum {
-  Main = 0,
-  Touch = 1,
-  Intro = 2,
-  makeAka = 3,
-  Story = 4,
+  Loading = 0,
+  Intro = 1,
+  makeAka = 2,
+  Story = 3,
+  Touch = 4,
   TutorialEnd = 5,
+  Main = 6,
 }

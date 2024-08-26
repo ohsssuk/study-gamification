@@ -1,10 +1,12 @@
 import View from "@/components/coonyang/View";
+import { NowStepEnum } from "@/enums/coonyang";
 
 interface MainProps {
   actCount: number;
   actTotalCount: number;
   fullCount: number;
   makeAvailableSeconds: number;
+  nowStep: NowStepEnum;
   callback: () => void;
 }
 
@@ -12,8 +14,9 @@ export default function Main({
   actCount = 0,
   actTotalCount = 0,
   fullCount = 4,
-  callback = () => {},
+  nowStep = NowStepEnum.Main,
   makeAvailableSeconds = 10,
+  callback = () => {},
 }: MainProps) {
   function formatTime(seconds: number) {
     const hours = String(Math.floor(seconds / 3600)).padStart(2, "0");
@@ -26,7 +29,9 @@ export default function Main({
     <View>
       <div className="jam-mission">
         <div>
-          {actTotalCount === 0 && <div className="tutorial-dimmed"></div>}
+          {actTotalCount === 0 && nowStep !== NowStepEnum.TutorialEnd && (
+            <div className="tutorial-dimmed"></div>
+          )}
           <div className="jam">
             <img
               className="bottle"

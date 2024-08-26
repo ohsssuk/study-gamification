@@ -545,15 +545,15 @@
   z-index: 1;
   transform: translate(-50%, -50%);
   opacity: 0.2;
-  animation: rotate 10s infinite linear;
+  animation: rotate-shine 10s infinite linear;
   pointer-events: none;
 }
-@keyframes rotate {
+@keyframes rotate-shine {
   0% {
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg) scale(2);
   }
   100% {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg) scale(2);
   }
 }
 #coonyang_reward_popup .shining-jam-bottle .shining-effect {

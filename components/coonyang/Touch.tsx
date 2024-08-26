@@ -3,7 +3,11 @@ import { useDialogStore } from "@/stores/coonyangStore";
 import { useEffect, useRef, useState } from "react";
 import View from "@/components/coonyang/View";
 
-export default function Touch() {
+interface TouchProps {
+  makerAka: string;
+  callback: () => void;
+}
+export default function Touch({ makerAka, callback }: TouchProps) {
   const { createDialog, destoryDialog } = useDialogStore();
 
   const [touchedCount, setTouchedCount] = useState<number>(0);
@@ -11,8 +15,6 @@ export default function Touch() {
 
   const touchWrapRef = useRef<HTMLDivElement>(null);
   const berryImgRef = useRef<HTMLImageElement>(null);
-
-  const makerAka = "TESTER";
 
   useEffect(() => {
     if (touchedCount === 0) {
@@ -60,6 +62,7 @@ export default function Touch() {
 
       setTimeout(() => {
         console.log("completed");
+        callback();
       }, 2000);
     }
   }, [touchedCount, createDialog]);

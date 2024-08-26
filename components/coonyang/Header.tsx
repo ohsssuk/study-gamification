@@ -9,6 +9,10 @@ export default function Header({
   actCount = 0,
   type = GnbTypeEnum.All,
 }: HeaderProps) {
+  const goalPercent = `calc(${-100 + actCount * 25}%${
+    actCount === 1 ? "" : " - 2px"
+  })`;
+
   return (
     <nav id="coonyang_gnb">
       {type !== GnbTypeEnum.None && (
@@ -27,7 +31,10 @@ export default function Header({
                 alt="아이콘 이미지"
               />
               <div className="gage-bar">
-                <div className="level"></div>
+                <div
+                  className="level"
+                  style={{ transform: `translateX(${goalPercent})` }}
+                ></div>
               </div>
             </div>
           </div>
