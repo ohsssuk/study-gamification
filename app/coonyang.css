@@ -330,6 +330,27 @@
 .jam-mission .cta.trace {
   background: #fff;
 }
+.jam-mission .cta.trace:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border: 4px solid #fff;
+  position: absolute;
+  display: block;
+  z-index: 1;
+  animation: focus 1s infinite;
+}
+@keyframes focus {
+  0%,
+  100% {
+    transform: scale(1.12, 1.4);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
 .jam-mission .cta button {
   width: 100%;
   aspect-ratio: 276/72;
@@ -338,6 +359,8 @@
   font-size: 20px;
   color: #fff;
   line-height: 116%;
+  z-index: 2;
+  position: relative;
 }
 .jam-mission .cta button:disabled {
   background: url("/images/coonyang/btn/btn_disabled.png") center/100% no-repeat;
@@ -442,9 +465,9 @@
 }
 
 .tutorial-dimmed {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
+  width: 100%;
+  height: 100%;
+  position: absolute;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);

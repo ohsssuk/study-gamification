@@ -2,13 +2,17 @@ import View from "@/components/coonyang/View";
 
 interface MainProps {
   actCount: number;
+  actTotalCount: number;
   fullCount: number;
   makeAvailableSeconds: number;
+  callback: () => void;
 }
 
 export default function Main({
   actCount = 0,
+  actTotalCount = 0,
   fullCount = 4,
+  callback = () => {},
   makeAvailableSeconds = 10,
 }: MainProps) {
   function formatTime(seconds: number) {
@@ -22,6 +26,7 @@ export default function Main({
     <View>
       <div className="jam-mission">
         <div>
+          {actTotalCount === 0 && <div className="tutorial-dimmed"></div>}
           <div className="jam">
             <img
               className="bottle"
@@ -34,11 +39,12 @@ export default function Main({
               alt=""
             />
           </div>
-          <div className="cta">
+          <div className={`cta ${actTotalCount === 0 ? "trace" : ""}`}>
             <button
               className="to-make-jam"
               type="button"
               disabled={makeAvailableSeconds > 0}
+              onClick={callback}
             >
               {makeAvailableSeconds > 0 ? (
                 <>

@@ -15,7 +15,11 @@ export enum TouchStateEnum {
   InProgress = "inProgress",
 }
 
-export enum NowStelEnum {
+export enum NowStepEnum {
   Main = 0,
   Touch = 1,
+  Intro = 2,
+  makeAka = 3,
+  Story = 4,
+  TutorialEnd = 5,
 }
