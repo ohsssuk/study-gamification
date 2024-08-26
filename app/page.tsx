@@ -36,12 +36,12 @@ export default function Home() {
 
   const [dialogVersion, setDialogVersion] = useState<number>(0);
   const [nowStep, setNowStep] = useState<number>(NowStepEnum.Loading);
-
+  const [view, setView] = useState<JSX.Element | null>(null);
+  const [isRewordPopup, setIsRewordPopup] = useState<boolean>(false);
   const [speechingNow, setSpeechingNow] = useState<SpeechingNowEnum>(
     SpeechingNowEnum.Coo,
   );
-
-  const [view, setView] = useState<JSX.Element | null>(null);
+  const [headerType, setHeaderType] = useState<GnbTypeEnum>(GnbTypeEnum.All);
 
   useEffect(() => {
     setDialogVersion((prev) => prev + 1);
@@ -53,7 +53,7 @@ export default function Home() {
     } else {
       setNowStep(NowStepEnum.Main);
     }
-  }, [actTotalCount]);
+  }, [actTotalCount, actCount]);
 
   useEffect(() => {
     console.log(
@@ -99,8 +99,10 @@ export default function Home() {
         />,
       );
 
-      if (actCount === fullCount) {
-        setTimeout(() => {}, 3000);
+      if (actCount >= fullCount) {
+        setTimeout(() => {
+          setIsRewordPopup(true);
+        }, 2000);
       }
 
       // 튜토리얼 종료인지 여부에 따라 다른 대사 출력
@@ -124,11 +126,17 @@ export default function Home() {
     setNowStep(NowStepEnum.TutorialEnd);
   };
 
+  const completeFullJam = () => {
+    setIsRewordPopup(false);
+    setCompleteAct();
+    setNowStep(NowStepEnum.Main);
+  };
+
   return (
     <Wrap>
-      <RewardPopup />
+      {isRewordPopup && <RewardPopup callback={completeFullJam} />}
       {/* <InitLoading /> */}
-      <Header actCount={actCount} type={GnbTypeEnum.All} />
+      <Header actCount={actCount} type={headerType} />
 
       {view}
 

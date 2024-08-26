@@ -491,7 +491,7 @@
   color: #fff;
   text-align: center;
   font-family: "NeoDunggeunmoPro-Regular";
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 400;
   line-height: 130%;
   padding-top: 40px;
@@ -604,6 +604,7 @@
 #coonyang_reward_popup .point-slot .slot {
   position: relative;
   transform: translateY(56px);
+  transition: 4s cubic-bezier(0, 0, 0.4, 1.15);
 }
 #coonyang_reward_popup .point-slot .slot > .item {
   height: 100%;

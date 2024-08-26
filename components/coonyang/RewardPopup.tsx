@@ -1,31 +1,63 @@
+import { ReactNode, useEffect, useMemo, useRef } from "react";
+
 interface RewardPopupProps {
-  rewordText?: string;
-  reword?: number;
+  pickIndex?: number;
+  callback?: () => void;
 }
 export default function RewardPopup({
-  rewordText = "",
-  reword = 0,
+  pickIndex = 0,
+  callback = () => {},
 }: RewardPopupProps) {
-  const points = [
+  const slotRef = useRef<HTMLDivElement>(null);
+
+  const REWARD_CONFIG: { amount: number; text: ReactNode }[] = [
     {
       amount: 10,
-      text: "도와줘서 고마워…!<br>여기 수고비를 받아줘!",
+      text: (
+        <>
+          도와줘서 고마워…!
+          <br />
+          여기 수고비를 받아줘!
+        </>
+      ),
     },
     {
       amount: 100,
-      text: "이제 찹쌀떡을 만들 수 있겠군!<br>다음에도 도와줄 거지?",
+      text: (
+        <>
+          이제 찹쌀떡을 만들 수 있겠군!
+          <br />
+          다음에도 도와줄 거지?
+        </>
+      ),
     },
     {
       amount: 500,
-      text: "야호, 맛있는 잼이 완성됐어!<br>너 정말 꾹꾹이에 소질 있구나?!",
+      text: (
+        <>
+          야호, 맛있는 잼이 완성됐어!
+          <br />너 정말 꾹꾹이에 소질 있구나?!
+        </>
+      ),
     },
     {
       amount: 1000,
-      text: "이렇게 맛있는 잼은 처음이야!<br>너 발바닥에 설탕 발랐니?",
+      text: (
+        <>
+          이렇게 맛있는 잼은 처음이야!
+          <br />너 발바닥에 설탕 발랐니?
+        </>
+      ),
     },
     {
       amount: 30000,
-      text: "이건… 정말 환상의 맛이야…!<br>제발 다음에 또 만들어줘!!",
+      text: (
+        <>
+          이건… 정말 환상의 맛이야…!
+          <br />
+          제발 다음에 또 만들어줘!!
+        </>
+      ),
     },
   ];
 
@@ -34,17 +66,19 @@ export default function RewardPopup({
     repeatCount: number,
   ): JSX.Element[] => {
     const items: JSX.Element[] = [];
+    let id = 0;
 
     for (let i = 1; i <= repeatCount; i++) {
-      points.forEach((item, index) => {
+      REWARD_CONFIG.forEach((item, index) => {
+        id++;
         items.push(
           <div
-            key={`${i}-${index}`}
+            key={`${i}-${id}`}
             className={`item ${
               i === repeatCount && index === pickIndex ? "pick" : ""
             }`}
           >
-            <span>{item.amount}</span>
+            <span>{item.amount.toLocaleString()}</span>
             <span>원</span>
           </div>,
         );
@@ -54,14 +88,34 @@ export default function RewardPopup({
     return items;
   };
 
+  const items = useMemo(() => createSlotItems(pickIndex, 5), [pickIndex]);
+
+  useEffect(() => {
+    const $slot = slotRef.current;
+    if ($slot) {
+      const $pickSlot = $slot.querySelector(".item.pick") as HTMLDivElement;
+      if ($pickSlot) {
+        const distance = $pickSlot.offsetTop * -1;
+
+        $slot.style.transform = `translateY(${distance}px)`;
+      }
+    }
+  }, [pickIndex]);
+
+  const handleClickCTABtn = () => {
+    callback();
+  };
+
   return (
     <div id="coonyang_reward_popup" className="reward-full-popup">
       <div className="head">
-        <p>{rewordText}</p>
+        <p>{REWARD_CONFIG[pickIndex].text}</p>
       </div>
       <div className="content">
         <div>
-          <h2>적립금 {reword}원 획득</h2>
+          <h2>
+            적립금 {REWARD_CONFIG[pickIndex].amount.toLocaleString()}원 획득
+          </h2>
           <img
             className="label-img"
             src="/images/coonyang/jam_label.png"
@@ -103,11 +157,13 @@ export default function RewardPopup({
               alt="포인트"
             />
             <div className="point-slot">
-              <div className="slot spinning">{createSlotItems(3, 22)}</div>
+              <div className="slot" ref={slotRef}>
+                {items}
+              </div>
             </div>
           </div>
           <div className="cta">
-            <button type="button">적립금 받기</button>
+            <button onClick={handleClickCTABtn}>적립금 받기</button>
           </div>
         </div>
       </div>

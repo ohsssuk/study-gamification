@@ -25,6 +25,10 @@ export default function Main({
     return `${hours}:${minutes}:${secs}`;
   }
 
+  if (actCount > fullCount) {
+    actCount = fullCount;
+  }
+
   return (
     <View>
       <div className="jam-mission">

@@ -29,7 +29,7 @@ interface Info {
   fullCount: number;
 
   incrementActCount: () => void;
-  setCompleteAct: (actTotalCount: number, fullCount: number) => void;
+  setCompleteAct: () => void;
   setMakerAka: (makerAka: string) => void;
 }
 export const useInfoStore = create<Info>()(
@@ -43,12 +43,14 @@ export const useInfoStore = create<Info>()(
 
       incrementActCount: () =>
         set((state) => ({
-          actCount: state.actTotalCount + INCREASE_COUNT,
+          actCount: state.actCount + INCREASE_COUNT,
           actTotalCount: state.actTotalCount + INCREASE_COUNT,
         })),
 
-      setCompleteAct: (actTotalCount, fullCount) =>
-        set({ actTotalCount: actTotalCount % fullCount }),
+      setCompleteAct: () =>
+        set((state) => ({
+          actCount: state.actTotalCount % state.fullCount,
+        })),
 
       setMakerAka: (makerAka) => set({ makerAka }),
     }),
