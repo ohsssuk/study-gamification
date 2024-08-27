@@ -4,7 +4,7 @@ export const intro = (
   setSpeechingNow: (speechingNow: SpeechingNowEnum) => void,
 ) => [
   {
-    text: "안녕? 나는 쿠냥이야. 너의 이름은 뭐야?",
+    text: "안녕? 나는 쿠냥이야. 너의 이름은 뭐야? (대화창을 클릭하여 진행할 수 있습니다)",
     profileName: "coo_normal",
     callback: () => {
       setSpeechingNow(SpeechingNowEnum.Coo);

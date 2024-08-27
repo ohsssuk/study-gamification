@@ -252,6 +252,13 @@
     opacity: 0;
   }
 }
+#coonyang_dialog .dialog-guide {
+  position: absolute;
+  top: -40px;
+  width: 100%;
+  left: 0;
+  font-size: 18px;
+}
 
 .create-user-name-form {
   font-family: "NeoDunggeunmoPro-Regular";
