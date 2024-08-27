@@ -7,6 +7,8 @@ const nextConfig = {
   output: "export",
   images: {
     unoptimized: true, // 이미지 최적화 비활성화
+    loader: "imgix",
+    path: productionURL,
   },
   basePath: isProduction ? productionPath : "",
   assetPrefix: isProduction ? productionURL : "",
