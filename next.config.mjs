@@ -7,8 +7,8 @@ const nextConfig = {
   images: {
     unoptimized: true, // 이미지 최적화 비활성화
   },
-  basePath: isProduction ? productionPath : "",
-  assetPrefix: isProduction ? productionPath : "",
+  basePath: productionPath,
+  assetPrefix: productionPath,
 };
 
 export default nextConfig;
