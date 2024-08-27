@@ -27,10 +27,12 @@ interface Info {
   makeAvailableSeconds: number;
   makerAka: string;
   fullCount: number;
+  timer: NodeJS.Timeout | null;
 
   incrementActCount: () => void;
   setCompleteAct: () => void;
   setMakerAka: (makerAka: string) => void;
+  setTimer: () => void;
 }
 export const useInfoStore = create<Info>()(
   persist(
@@ -40,11 +42,13 @@ export const useInfoStore = create<Info>()(
       actTotalCount: 0,
       makeAvailableSeconds: 0,
       makerAka: "",
+      timer: null,
 
       incrementActCount: () =>
         set((state) => ({
           actCount: state.actCount + INCREASE_COUNT,
           actTotalCount: state.actTotalCount + INCREASE_COUNT,
+          makeAvailableSeconds: 5,
         })),
 
       setCompleteAct: () =>
@@ -53,6 +57,27 @@ export const useInfoStore = create<Info>()(
         })),
 
       setMakerAka: (makerAka) => set({ makerAka }),
+
+      setTimer: () =>
+        set((state) => {
+          if (state.timer) {
+            clearInterval(state.timer);
+          }
+          const timer = setInterval(() => {
+            set((prevState) => {
+              if (prevState.makeAvailableSeconds > 0) {
+                return {
+                  makeAvailableSeconds: prevState.makeAvailableSeconds - 1,
+                };
+              } else {
+                clearInterval(timer);
+                return { timer: null };
+              }
+            });
+          }, 1000);
+
+          return { timer };
+        }),
     }),
     {
       name: "info-storage",

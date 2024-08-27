@@ -1,5 +1,6 @@
 import View from "@/components/coonyang/View";
 import { NowStepEnum } from "@/enums/coonyang";
+import Image from "next/image";
 
 interface MainProps {
   actCount: number;
@@ -37,15 +38,19 @@ export default function Main({
             <div className="tutorial-dimmed"></div>
           )}
           <div className="jam">
-            <img
+            <Image
               className="bottle"
               src={`/images/coonyang/jam_lv_${actCount}.png`}
               alt={`잼 ${actCount}/${fullCount}`}
+              width={173}
+              height={250}
             />
-            <img
+            <Image
               className="deco"
               src="/images/coonyang/berry_small.png"
               alt=""
+              width={184}
+              height={160}
             />
           </div>
           <div className={`cta ${actTotalCount === 0 ? "trace" : ""}`}>

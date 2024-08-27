@@ -91,6 +91,9 @@ export default function RewardPopup({
   const items = useMemo(() => createSlotItems(pickIndex, 5), [pickIndex]);
 
   useEffect(() => {
+    console.log(
+      `완료 보상 팝업 오픈: ${REWARD_CONFIG[pickIndex].amount}원 당첨`,
+    );
     const $slot = slotRef.current;
     if ($slot) {
       const $pickSlot = $slot.querySelector(".item.pick") as HTMLDivElement;

@@ -18,7 +18,7 @@ import Conversation from "@/components/coonyang/Conversation";
 import MakeAka from "@/components/coonyang/MakerAka";
 import RewardPopup from "@/components/coonyang/RewardPopup";
 
-import { delay } from "@/utils/common";
+import { delay, getRandomNumber } from "@/utils/common";
 import "./coonyang.css";
 
 export default function Home() {
@@ -34,6 +34,7 @@ export default function Home() {
     incrementActCount,
     setCompleteAct,
     setMakerAka,
+    setTimer,
   } = useInfoStore();
 
   const [dialogVersion, setDialogVersion] = useState<number>(0);
@@ -44,6 +45,7 @@ export default function Home() {
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [headerType, setHeaderType] = useState<GnbTypeEnum>(GnbTypeEnum.All);
+  const [pickIndex, setPickIndex] = useState<number>(0);
 
   const prevNowStepRef = useRef<NowStepEnum>();
 
@@ -89,6 +91,7 @@ export default function Home() {
         createDialog(tutorialStart());
       } else {
         // 메인 화면
+        setTimer();
 
         // 미션 이후 진입이면 UX를 위한 강제 로딩화면 추가
         if (prevNowStep === NowStepEnum.Touch) {
@@ -106,7 +109,10 @@ export default function Home() {
 
         if (actCount >= fullCount) {
           await delay(1500);
-          setIsRewordPopup(true);
+          setIsRewordPopup(() => {
+            setPickIndex(getRandomNumber(0, 4));
+            return true;
+          });
           setCompleteAct();
         }
       }
@@ -129,8 +135,7 @@ export default function Home() {
   const completeFullJam = () => {
     setIsRewordPopup(false);
     destoryDialog();
-
-    setNowStep(NowStepEnum.Main);
+    createDialog(main(actCount));
   };
 
   const loading = async (ms: number) => {
@@ -141,7 +146,9 @@ export default function Home() {
 
   return (
     <Wrap>
-      {isRewordPopup && <RewardPopup callback={completeFullJam} />}
+      {isRewordPopup && (
+        <RewardPopup callback={completeFullJam} pickIndex={pickIndex} />
+      )}
       {isLoading && <Loading />}
 
       <Header actCount={actCount} type={headerType} />
