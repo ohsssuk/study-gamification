@@ -7,9 +7,9 @@ const nextConfig = {
   output: "export",
   images: {
     unoptimized: true, // 이미지 최적화 비활성화
+    loader: "custom",
+    loaderFile: "./ImageLoader.ts",
   },
-  basePath: "",
-  assetPrefix: "",
 };
 
 export default nextConfig;
