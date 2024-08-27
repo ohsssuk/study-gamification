@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { GnbTypeEnum, NowStepEnum, SpeechingNowEnum } from "@/enums/coonyang"; // Enum
 
@@ -10,6 +10,7 @@ import { intro, main, story, tutorialStart, tutorialEnd } from "./scenarioData";
 import Header from "@/components/coonyang/Header";
 import Wrap from "@/components/coonyang/Wrap";
 import InitLoading from "@/components/coonyang/InitLoading";
+import Loading from "@/components/coonyang/Loading";
 import Touch from "@/components/coonyang/Touch";
 import Dialog from "@/components/coonyang/Dialog";
 import Main from "@/components/coonyang/Main";
@@ -36,21 +37,19 @@ export default function Home() {
   } = useInfoStore();
 
   const [dialogVersion, setDialogVersion] = useState<number>(0);
-  const [nowStep, setNowStep] = useState<number>(NowStepEnum.Loading);
-  const [view, setView] = useState<JSX.Element | null>(null);
+  const [nowStep, setNowStep] = useState<NowStepEnum>(NowStepEnum.Loading);
   const [isRewordPopup, setIsRewordPopup] = useState<boolean>(false);
   const [speechingNow, setSpeechingNow] = useState<SpeechingNowEnum>(
     SpeechingNowEnum.Coo,
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [headerType, setHeaderType] = useState<GnbTypeEnum>(GnbTypeEnum.All);
+
+  const prevNowStepRef = useRef<NowStepEnum>();
 
   useEffect(() => {
     setDialogVersion((prev) => prev + 1);
   }, [scenario]);
-
-  useEffect(() => {
-    console.log(speechingNow);
-  }, [speechingNow]);
 
   useEffect(() => {
     if (actTotalCount === 0) {
@@ -62,7 +61,10 @@ export default function Home() {
 
   useEffect(() => {
     const runEffect = async () => {
+      const prevNowStep = prevNowStepRef.current;
+
       console.log(
+        `직전 단계:${prevNowStepRef.current}`,
         `진행 단계:${nowStep}`,
         `현재 잼 레벨:${actCount}`,
         `누적 완료 횟수:${actTotalCount}`,
@@ -86,23 +88,33 @@ export default function Home() {
         // 터치 미션
         createDialog(tutorialStart());
       } else {
+        // 메인 화면
+
+        // 미션 이후 진입이면 UX를 위한 강제 로딩화면 추가
+        if (prevNowStep === NowStepEnum.Touch) {
+          await loading(1200);
+        }
+
         // 튜토리얼 종료인지 여부에 따라 다른 대사 출력
-        if (nowStep === NowStepEnum.TutorialEnd) {
+        if (prevNowStep === NowStepEnum.Touch && actTotalCount === 2) {
           createDialog(tutorialEnd());
         } else if (actTotalCount === 0) {
           createDialog(tutorialStart());
         } else {
           createDialog(main(actCount));
         }
-        // 메인 화면
+
         if (actCount >= fullCount) {
-          await delay(2000);
+          await delay(1500);
           setIsRewordPopup(true);
+          setCompleteAct();
         }
       }
     };
 
     runEffect();
+
+    prevNowStepRef.current = nowStep;
   }, [nowStep]);
 
   const selectAka = (aka: string) => {
@@ -112,22 +124,31 @@ export default function Home() {
 
   const completeTouch = () => {
     incrementActCount();
-    setNowStep(NowStepEnum.TutorialEnd);
   };
 
   const completeFullJam = () => {
     setIsRewordPopup(false);
-    setCompleteAct();
+    destoryDialog();
+
     setNowStep(NowStepEnum.Main);
+  };
+
+  const loading = async (ms: number) => {
+    setIsLoading(true);
+    await delay(ms);
+    setIsLoading(false);
   };
 
   return (
     <Wrap>
       {isRewordPopup && <RewardPopup callback={completeFullJam} />}
-      {/* <InitLoading /> */}
+      {isLoading && <Loading />}
+
       <Header actCount={actCount} type={headerType} />
 
-      {nowStep === NowStepEnum.Intro ? (
+      {nowStep === NowStepEnum.Loading ? (
+        <InitLoading />
+      ) : nowStep === NowStepEnum.Intro ? (
         <Conversation speechingNow={speechingNow} />
       ) : nowStep === NowStepEnum.Story ? (
         <Conversation speechingNow={speechingNow} />

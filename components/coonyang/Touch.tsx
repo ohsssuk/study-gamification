@@ -34,7 +34,7 @@ export default function Touch({ makerAka, callback }: TouchProps) {
         },
       ]);
       setState(TouchStateEnum.InProgress);
-    } else if (touchedCount === 10) {
+    } else if (touchedCount === 5) {
       createDialog([
         {
           text: "아직 부족해! 발바닥 젤리에 불이 날 때까지 누르란 말이야!",
@@ -42,7 +42,7 @@ export default function Touch({ makerAka, callback }: TouchProps) {
           isLast: true,
         },
       ]);
-    } else if (touchedCount === 20) {
+    } else if (touchedCount === 10) {
       createDialog([
         {
           text: `조금만 더...! 거의 다왔어 ${makerAka} 냥!`,
@@ -50,7 +50,7 @@ export default function Touch({ makerAka, callback }: TouchProps) {
           isLast: true,
         },
       ]);
-    } else if (touchedCount === 30) {
+    } else if (touchedCount === 15) {
       createDialog([
         {
           text: `아... 나의 발바닥 젤리에 불이 나는군...!`,
@@ -61,9 +61,9 @@ export default function Touch({ makerAka, callback }: TouchProps) {
       setState(TouchStateEnum.Complete);
 
       setTimeout(() => {
-        console.log("completed");
+        console.log("미션 완료: TEST를 위해 완료횟수를 2로 조정");
         callback();
-      }, 2000);
+      }, 2500);
     }
   }, [touchedCount, createDialog]);
 
@@ -130,7 +130,26 @@ export default function Touch({ makerAka, callback }: TouchProps) {
         </button>
         {state !== TouchStateEnum.InProgress && (
           <div className={`touch-state-banner ${state}`}>
-            ${state === TouchStateEnum.Start ? "터치" : "완료"}
+            ${state === TouchStateEnum.Start ? "터치" : "완료"}$
+            {state === TouchStateEnum.Complete && (
+              <div className="twinkling-effect">
+                <img
+                  className="effect effect-1"
+                  src="/images/coonyang/effect/effect_white_1.png"
+                  alt=""
+                />
+                <img
+                  className="effect effect-2"
+                  src="/images/coonyang/effect/effect_white_2.png"
+                  alt=""
+                />
+                <img
+                  className="effect effect-3"
+                  src="/images/coonyang/effect/effect_white_3.png"
+                  alt=""
+                />
+              </div>
+            )}
           </div>
         )}
       </div>
