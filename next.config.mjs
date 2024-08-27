@@ -4,8 +4,8 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const nextConfig = {
   output: "export",
-  basePath: isProduction ? "/study-gamification" : "",
-  assetPrefix: isProduction ? "/study-gamification" : "",
+  basePath: "/study-gamification",
+  assetPrefix: "/study-gamification",
 };
 
 export default nextConfig;
