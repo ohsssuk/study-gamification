@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const isProduction = process.env.NODE_ENV === "production";
-const productionURL = "https://ohsssuk.github.io";
 const productionPath = "/study-gamification";
 
 const nextConfig = {
@@ -8,7 +7,7 @@ const nextConfig = {
   images: {
     unoptimized: true, // 이미지 최적화 비활성화
   },
-  basePath: isProduction ? productionURL : "",
+  basePath: isProduction ? productionPath : "",
   assetPrefix: isProduction ? productionPath : "",
 };
 
