@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const isProduction = process.env.NODE_ENV === "production";
-const productionPath = "/study-gamification";
-const productionURL = "https://ohsssuk.github.io/study-gamification";
 
 const nextConfig = {
   output: "export",
@@ -10,8 +8,8 @@ const nextConfig = {
     loader: "imgix",
     path: productionURL,
   },
-  basePath: isProduction ? productionPath : "",
-  assetPrefix: isProduction ? productionURL : "",
+  basePath: isProduction ? "/study-gamification" : "",
+  assetPrefix: isProduction ? "/study-gamification/" : "",
 };
 
 export default nextConfig;
