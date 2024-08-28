@@ -7,7 +7,9 @@ const nextConfig = {
     unoptimized: true, // 이미지 최적화 비활성화
   },
   basePath: isProduction ? "/study-gamification" : "",
-  assetPrefix: isProduction ? "/study-gamification/" : "",
+  assetPrefix: isProduction
+    ? "https://ohsssuk.github.io/study-gamification/"
+    : "",
 };
 
 export default nextConfig;
