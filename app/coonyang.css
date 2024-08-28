@@ -597,6 +597,7 @@
   height: 56px;
 }
 #coonyang_reward_popup .point-img {
+  width: auto;
   height: 100%;
 }
 #coonyang_reward_popup .point-slot {

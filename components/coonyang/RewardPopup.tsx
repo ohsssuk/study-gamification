@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useMemo, useRef } from "react";
-
+import Image from "next/image";
 interface RewardPopupProps {
   pickIndex?: number;
   callback?: () => void;
@@ -119,45 +119,59 @@ export default function RewardPopup({
           <h2>
             적립금 {REWARD_CONFIG[pickIndex].amount.toLocaleString()}원 획득
           </h2>
-          <img
+          <Image
             className="label-img"
             src="/images/coonyang/jam_label.png"
             alt="잼 완성"
+            width={506}
+            height={192}
           />
           <div className="shining-jam-bottle">
-            <img
+            <Image
               className="rotated-shine"
               src="/images/coonyang/rotated_shine_4x.png"
               alt="후광 효과"
+              width={619}
+              height={617}
             />
-            <img
+            <Image
               className="jam-img"
               src="/images/coonyang/jam_lv_4.png"
               alt="잼 병"
+              width={173}
+              height={250}
             />
             <div className="shining-effect">
-              <img
+              <Image
                 className="effect effect-1"
                 src="/images/coonyang/effect/effect_yellow_1.png"
                 alt=""
+                width={20}
+                height={24}
               />
-              <img
+              <Image
                 className="effect effect-2"
                 src="/images/coonyang/effect/effect_yellow_3.png"
                 alt=""
+                width={20}
+                height={24}
               />
-              <img
+              <Image
                 className="effect effect-3"
                 src="/images/coonyang/effect/effect_yellow_2.png"
                 alt=""
+                width={52}
+                height={52}
               />
             </div>
           </div>
           <div className="reward-point">
-            <img
+            <Image
               className="point-img"
               src="/images/coonyang/gnb/gage_icon.png"
               alt="포인트"
+              width={44}
+              height={46}
             />
             <div className="point-slot">
               <div className="slot" ref={slotRef}>

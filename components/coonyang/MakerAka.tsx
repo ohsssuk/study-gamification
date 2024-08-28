@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import View from "./View";
+import Image from "next/image";
 
 interface MakeAkaProps {
   callback: (aka: string) => void;
@@ -25,10 +26,12 @@ export default function MakeAka({ callback }: MakeAkaProps) {
           <br />
           {aka[akaIndex]} 냥이야!
         </div>
-        <img
+        <Image
           className="face-icon speeching-now"
           src="/images/coonyang/conversation/user_face_side.png"
           alt="고양이 얼굴"
+          width={100}
+          height={100}
         />
         <div className="cta">
           <button className="select" onClick={selectAka}>

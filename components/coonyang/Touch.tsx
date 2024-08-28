@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { TouchStateEnum } from "@/enums/coonyang";
 import { useDialogStore } from "@/stores/coonyangStore";
 import { useEffect, useRef, useState } from "react";
@@ -119,11 +120,13 @@ export default function Touch({ makerAka, callback }: TouchProps) {
   return (
     <View viewType={3}>
       <div ref={touchWrapRef} className="touch-wrap">
-        <img
+        <Image
           ref={berryImgRef}
           className="berry-img"
           src="/images/coonyang/berry_xl.png"
           alt="딸기 클릭"
+          width={316}
+          height={299}
         />
         <button onClick={handleTouch} className="touch-berry" type="button">
           딸기 클릭(꾹꾹이)
@@ -133,20 +136,26 @@ export default function Touch({ makerAka, callback }: TouchProps) {
             ${state === TouchStateEnum.Start ? "터치" : "완료"}$
             {state === TouchStateEnum.Complete && (
               <div className="twinkling-effect">
-                <img
+                <Image
                   className="effect effect-1"
                   src="/images/coonyang/effect/effect_white_1.png"
                   alt=""
+                  width={41}
+                  height={48}
                 />
-                <img
+                <Image
                   className="effect effect-2"
                   src="/images/coonyang/effect/effect_white_2.png"
                   alt=""
+                  width={75}
+                  height={92}
                 />
-                <img
+                <Image
                   className="effect effect-3"
                   src="/images/coonyang/effect/effect_white_3.png"
                   alt=""
+                  width={105}
+                  height={104}
                 />
               </div>
             )}
