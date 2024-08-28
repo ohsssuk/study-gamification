@@ -9,13 +9,6 @@ const nextConfig = {
   },
   basePath: isProduction ? basePath : "",
   assetPrefix: isProduction ? `${basePath}/` : "",
-  webpack(config) {
-    if (isProduction) {
-      config.output.publicPath = `${basePath}/`;
-    }
-
-    return config;
-  },
 };
 
 export default nextConfig;
