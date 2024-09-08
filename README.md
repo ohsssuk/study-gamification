@@ -13,6 +13,8 @@
 -------------------------
 ## 주요기능
 
+![](https://ohsssuk.github.io/images/work/work_13/cn-flow.png)
+
 1. (첫 시작시) **[스토리]**
 2. (첫 시작시) **[닉네임 정하기]**
 3. (첫 시작시) **[튜토리얼]**
@@ -38,6 +40,8 @@ npm run start
 ```
 -------------------------
 ## 컴포넌트
+
+![](https://ohsssuk.github.io/images/work/work_13/structure.png)
 
 - **스타일 관련**
   
